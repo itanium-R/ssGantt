@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>jQuery.Gantt</title>
+  <meta name="viewport" content="width=800,initial-scale=1.5">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=IE8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    html body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #f6f6f6;
+      overflow: hidden;
+    }
+
+    .wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      max-width: 800px;
+      width: 90%;
+      text-align: center;
+      /*
+      margin-top: 25vh;
+      margin-left: 25%;
+      width: 50%;
+      transform:scale(2);*/
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap" id="main">
+    <div class="gantt">Now Loading...</div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="js/jquery.fn.gantt.min.js"></script>
+  <script src="js/zoom.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>
+
+    var schedules = [];
+
+    //var zoomPar = (window.innerWidth / 800);
+    //$("body").css("zoom", zoomPar*100 + "%");
+
+    zoom.to({ element: document.querySelector('#main') });
+
+    fetch("https://script.google.com/macros/s/AKfycbzH2iGbQkuhe18_yd6fcC1gZmcgr-8ahPJeejdKf2h4AnLKO3E/exec")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        console.log(myJson)
+        schedules = myJson;
+        gantt();
+      });
+
+    function gantt() {
+      $(function () {
+        "use strict";
+
+        // shifts dates closer to Date.now()
+        var offset = new Date().setHours(0, 0, 0, 0) -
+          new Date(schedules[0].values[0].from).setDate(35);
+        for (var i = 0, len = schedules.length, value; i < len; i++) {
+          value = schedules[i].values[0];
+          value.from += offset;
+          value.to += offset;
+        }
+
+        $(".gantt").gantt({
+          source: schedules,
+          navigate: "scroll",
+          scale: "days",
+          maxScale: "months",
+          minScale: "hours",
+          months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          dow: ["日", "月", "火", "水", "木", "金", "土"],
+          itemsPerPage: 12,
+          scrollToToday: false,
+          useCookie: true,
+          onItemClick: function (data) {
+            console.log(data);
+          },
+          onAddClick: function (dt, rowId) {
+            console.log(dt, rowId);
+          },
+          onRender: function () {
+            if (window.console && typeof console.log === "function") {
+              console.log("chart rendered");
+            }
+          }
+        });
+
+        $(".gantt").popover({
+          selector: ".bar",
+          content: function _getItemText() {
+            return this.textContent;
+          },
+          container: '.gantt',
+          title: "",
+          trigger: "hover",
+          placement: "auto right"
+        });
+
+        prettyPrint();
+
+      });
+    }
+  </script>
+
+</body>
+
+</html>
