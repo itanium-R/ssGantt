@@ -44,7 +44,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-  <script src="js/jquery.fn.gantt.min.js"></script>
+  <script src="js/jquery.fn.gantt.js"></script>
   <script src="js/zoom.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
@@ -72,8 +72,7 @@
         "use strict";
 
         // shifts dates closer to Date.now()
-        var offset = new Date().setHours(0, 0, 0, 0) -
-          new Date(schedules[0].values[0].from).setDate(35);
+        var offset = 0;
         for (var i = 0, len = schedules.length, value; i < len; i++) {
           value = schedules[i].values[0];
           value.from += offset;
