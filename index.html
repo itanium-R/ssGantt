@@ -46,7 +46,11 @@
 
     var schedules = [];
 
-    zoom.to({ element: document.querySelector('#main') });
+    function zoomMain() {
+      zoom.to({ element: document.querySelector('#main') });
+    }
+    zoomMain();
+    window.addEventListener('resize', zoomMain, false);
 
     fetch("https://script.google.com/macros/s/AKfycbzH2iGbQkuhe18_yd6fcC1gZmcgr-8ahPJeejdKf2h4AnLKO3E/exec")
       .then(function (response) {
