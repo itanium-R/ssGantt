@@ -47,8 +47,10 @@
     var schedules = [];
 
     function zoomMain() {
+      zoom.out();
       zoom.to({ element: document.querySelector('#main') });
     }
+
     zoomMain();
     window.addEventListener('resize', zoomMain, false);
 
