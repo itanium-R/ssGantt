@@ -2,8 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>jQuery.Gantt</title>
-  <meta name="viewport" content="width=800,initial-scale=1.5">
+  <title>ssGantt</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=IE8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,11 +27,6 @@
       max-width: 800px;
       width: 90%;
       text-align: center;
-      /*
-      margin-top: 25vh;
-      margin-left: 25%;
-      width: 50%;
-      transform:scale(2);*/
     }
   </style>
 </head>
@@ -52,9 +46,6 @@
 
     var schedules = [];
 
-    //var zoomPar = (window.innerWidth / 800);
-    //$("body").css("zoom", zoomPar*100 + "%");
-
     zoom.to({ element: document.querySelector('#main') });
 
     fetch("https://script.google.com/macros/s/AKfycbzH2iGbQkuhe18_yd6fcC1gZmcgr-8ahPJeejdKf2h4AnLKO3E/exec")
@@ -71,7 +62,6 @@
       $(function () {
         "use strict";
 
-        // shifts dates closer to Date.now()
         var offset = 0;
         for (var i = 0, len = schedules.length, value; i < len; i++) {
           value = schedules[i].values[0];
