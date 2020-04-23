@@ -46,6 +46,16 @@
 
     var schedules = [];
 
+    function getParam(name) {
+      let url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     function zoomMain() {
       zoom.out();
       zoom.to({ element: document.querySelector('#main') });
@@ -54,7 +64,13 @@
     zoomMain();
     window.addEventListener('resize', zoomMain, false);
 
-    fetch("https://script.google.com/macros/s/AKfycbzH2iGbQkuhe18_yd6fcC1gZmcgr-8ahPJeejdKf2h4AnLKO3E/exec")
+    let schedulesUrl = getParam("surl");
+    const DEFURL = "https://script.google.com/macros/s/AKfycbzH2iGbQkuhe18_yd6fcC1gZmcgr-8ahPJeejdKf2h4AnLKO3E/exec";
+    if (schedulesUrl == null) {
+      schedulesUrl = prompt("スケジュールのソースURLを入力してください", DEFURL);
+      history.replaceState('', '', '?surl=' + schedulesUrl);
+    }
+    fetch(schedulesUrl)
       .then(function (response) {
         return response.json();
       })
